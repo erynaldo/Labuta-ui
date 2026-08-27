@@ -18,11 +18,13 @@
   ## Link do repositório remoto no Github;
   - https://github.com/erynaldo/Labuta-ui
 
-  ## Link do sistema feito o deploy, para teste
-  - https://labuta.vercel.app/
-
   ## Link no Trello - para o planejamento, organização, controle e divisão das tarefas
   - https://trello.com/b/3WWLsgnF/tarefa-1-projeto-integrador-ii
+
+
+  ## Link do sistema feito o deploy, para teste
+  - Será disponibilizado na últim entrega
+
 
 **---------------------------------------------------------------------------**
 
@@ -65,10 +67,10 @@
   ## Prazo dessa Segunda Entrega no SIGAA: (17/08/2026 - 13/09/2026)
 
   ## Prazos para implementação das interfaces
-    - 28/08 a 08/09 -> Implementação das páginas.
-    - 09/09 a 11/09 -> Revisão de todo o código.
-    - 12/09 -> Versionar e enviar o projeto para o repositório no GitHub.
-    - 12/09 -> Atualizar as tarefas, sprints no Trello.
-    - 13/09 -> Envio da Atividade do SIGAA (arquivo pdf com os links Trello e Repositório).
+  - 28/08 a 08/09 -> Implementação das páginas.
+  - 09/09 a 11/09 -> Revisão de todo o código.
+  - 12/09 -> Versionar e enviar o projeto para o repositório no GitHub.
+  - 12/09 -> Atualizar as tarefas, sprints no Trello.
+  - 13/09 -> Envio da Atividade do SIGAA (arquivo pdf com os links Trello e Repositório).
   
   ## Novas alterações:
