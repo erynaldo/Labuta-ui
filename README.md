@@ -23,7 +23,7 @@
 
 
   ## Link do sistema feito o deploy, para teste
-  - Será disponibilizado na últim entrega
+  - Será disponibilizado na última entrega
 
 
 **---------------------------------------------------------------------------**
