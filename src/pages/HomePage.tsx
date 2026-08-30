@@ -80,7 +80,7 @@ export function HomePage({ navigate }: { navigate: (p: Page) => void }) {
                 </div>
             </main>
 
-            {/* <SiteFooter navigate={navigate} /> */}
+            <SiteFooter navigate={navigate} />
 
             {selectedProf && (
                 <ModalOverlay onClose={() => setSelectedProf(null)}>
