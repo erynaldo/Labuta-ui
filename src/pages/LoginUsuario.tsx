@@ -40,7 +40,6 @@ export function LoginPage({ navigate, onLogin }: { navigate: (p: Page) => void; 
         <div className="bg-white rounded-2xl shadow-[0_2px_32px_rgba(0,0,0,0.10)] w-full max-w-sm p-8">
           <div className="mb-7">
             <div className="flex items-center justify-center gap-2 mb-1">
-              {/* <Hammer className="w-5 h-5 text-[#1D4ED8]" /> */}
               <img src="public/favicon-32.png" alt="Labuta" className="w-7" />
               <span className="text-1xs font-bold text-[#1D4ED8] uppercase tracking-wide">Labuta</span>
             </div>
@@ -52,7 +51,7 @@ export function LoginPage({ navigate, onLogin }: { navigate: (p: Page) => void; 
             <span className="text-sm text-blue-600">Vanessa</span>
             <button
               onClick={() => navigate("dashboard")}
-              className="bg-[#1D4ED8] text-white text-sm font-medium border px-4 py-2 rounded-lg hover:bg-[#1D4ED8] transition-colors cursor-pointer"
+              className="bg-[#1D4ED8] text-white text-sm font-medium border px-4 py-2 rounded-lg hover:bg-[#0d3cbe] transition-colors cursor-pointer"
             >
               Entrar
             </button>
