@@ -40,7 +40,7 @@ export function LoginPage({ navigate, onLogin }: { navigate: (p: Page) => void; 
         <div className="bg-white rounded-2xl shadow-[0_2px_32px_rgba(0,0,0,0.10)] w-full max-w-sm p-8">
           <div className="mb-7">
             <div className="flex items-center justify-center gap-2 mb-1">
-              <img src="public/favicon-32.png" alt="Labuta" className="w-7" />
+              <img src="/favicon-32.png" alt="Labuta" className="w-7" />
               <span className="text-1xs font-bold text-[#1D4ED8] uppercase tracking-wide">Labuta</span>
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mt-2">Entrar</h2>

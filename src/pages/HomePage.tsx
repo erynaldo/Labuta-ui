@@ -68,16 +68,7 @@ export function HomePage({ navigate }: { navigate: (p: Page) => void }) {
                         Busque pelo nome, profissão ou cidade.
                     </p>
                 </div>
-                {/* <ProfessionalsSection onSaibaMais={setSelectedProf} /> */}
-                <div className="flex flex-col gap-5 mt-3">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            className="w-full border border-gray-200 rounded-xl pl-4 pr-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#1D4ED8]/30 focus:border-[#1D4ED8] transition-all placeholder:text-gray-400 shadow-sm"
-                            placeholder="Buscar por nome, profissão ou cidade..."
-                        />
-                    </div>
-                </div>
+                <ProfessionalsSection onSaibaMais={setSelectedProf} />
             </main>
 
             <SiteFooter navigate={navigate} />
