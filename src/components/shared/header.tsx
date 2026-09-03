@@ -8,14 +8,14 @@ export function PublicNav({ navigate }: { navigate: (p: Page) => void }) {
         <button onClick={() => navigate("home")} className="flex items-center gap-2">
           {/* Imagem para Computador (Desktop) - Aparece em telas md (médias) ou maiores */}
           <img 
-            src="public/logo-labuta.png" 
+            src="/logo-labuta.png" 
             alt="Labuta" 
             className="w-45 hidden md:block" 
           />
           
           {/* Imagem para Smartphone (Mobile) - Aparece apenas em telas menores que md */}
           <img 
-            src="public/favicon.ico" 
+            src="/favicon.ico" 
             alt="Labuta"
             className="block md:hidden" 
           />
