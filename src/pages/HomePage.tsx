@@ -14,10 +14,10 @@ export function HomePage({ navigate }: { navigate: (p: Page) => void }) {
 
             <section className="bg-gradient-to-br from-[#1D4ED8] via-[#1E40AF] to-[#1e3a8a] text-white py-14 px-6">
                 <div className="max-w-4xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm mb-6">
+                    {/* <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm mb-6">
                         <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                         328 profissionais disponíveis agora
-                    </div>
+                    </div> */}
 
                     <h1 className="text-4xl font-bold leading-tight mb-5">
                         Conectando profissionais a oportunidades
@@ -46,9 +46,9 @@ export function HomePage({ navigate }: { navigate: (p: Page) => void }) {
             <div className="bg-white border-b border-gray-100 py-5">
                 <div className="max-w-6xl mx-auto px-6 flex flex-wrap justify-center gap-10 text-center">
                     {[
-                        ["1.247", "Usuários cadastrados"],
-                        ["328", "Profissionais ativos"],
-                        ["4.891", "Serviços realizados"],
+                        ["247", "Usuários cadastrados"],
+                        ["98", "Profissionais ativos"],
+                        ["891", "Serviços realizados"],
                         ["4.7★", "Avaliação média"],
                     ].map(([number, label]) => (
                         <div key={label}>
@@ -68,10 +68,19 @@ export function HomePage({ navigate }: { navigate: (p: Page) => void }) {
                         Busque pelo nome, profissão ou cidade.
                     </p>
                 </div>
-                <ProfessionalsSection onSaibaMais={setSelectedProf} />
+                {/* <ProfessionalsSection onSaibaMais={setSelectedProf} /> */}
+                <div className="flex flex-col gap-5 mt-3">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            className="w-full border border-gray-200 rounded-xl pl-4 pr-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#1D4ED8]/30 focus:border-[#1D4ED8] transition-all placeholder:text-gray-400 shadow-sm"
+                            placeholder="Buscar por nome, profissão ou cidade..."
+                        />
+                    </div>
+                </div>
             </main>
 
-            <SiteFooter navigate={navigate} />
+            {/* <SiteFooter navigate={navigate} /> */}
 
             {selectedProf && (
                 <ModalOverlay onClose={() => setSelectedProf(null)}>
