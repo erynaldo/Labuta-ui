@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, ChevronDown, ChevronRight, DollarSign, FileText, Hammer, Paperclip, Phone, Send, Star, Upload, XCircle, Clock, MapPin } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronRight, DollarSign, FileText, Hammer, Paperclip, Phone, Send, Star, Upload, XCircle, Clock, MapPin, User, Briefcase, Building2, UserCheck, Image as ImageIcon, Trash2 } from "lucide-react";
 import type { Mensagem, Prof } from "../../types/types";
 import { btnBlueW, Field, fileClass, inputClass, ModalHeader, RatingStars } from "../../components/shared/others";
 import { extraProfessions, mensagensData, professionalsData } from "../../data/data";
@@ -303,4 +303,329 @@ export function AvaliacaoModal({ onClose }: { onClose: () => void }) {
 			</form>
 		</>
 	);
+}
+
+// Modal de Cadastro Completo / Edição de Perfil
+export function CadastroCompletoModal({ onClose }: { onClose: () => void }) {
+  // Estado 1: Define se o usuário é Contratante ou Prestador
+  const [role, setRole] = useState<"CONTRATANTE" | "PRESTADOR">("PRESTADOR");
+
+  // Estado 2: Define se o cadastro é PF (CPF) ou PJ (CNPJ)
+  const [docType, setDocType] = useState<"CPF" | "CNPJ">("CPF");
+  // Estados para dados de identificação
+  const [name, setName] = useState("");
+  const [documentNumber, setDocumentNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  // Estados para foto e autodeclaração
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [bio, setBio] = useState("");
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+  // Estados específicos do Prestador
+  const [profession, setProfession] = useState("");
+  const [serviceInput, setServiceInput] = useState("");
+  const [services, setServices] = useState<string[]>([]);
+  const [portfolio, setPortfolio] = useState<{ id: string; url: string; title: string }[]>([]);
+
+  // Adiciona um novo tipo de serviço ao apertar Enter
+  const handleAddService = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && serviceInput.trim()) {
+      e.preventDefault();
+      if (!services.includes(serviceInput.trim())) {
+        setServices([...services, serviceInput.trim()]);
+      }
+      setServiceInput("");
+    }
+  };
+
+  // Remove um serviço da lista de tags
+  const handleRemoveService = (serviceToRemove: string) => {
+    setServices(services.filter((s) => s !== serviceToRemove));
+  };
+
+  // Adiciona foto de serviço no portfólio
+  const handleAddPortfolioImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const newPhoto = {
+        id: Math.random().toString(36).substring(2, 9),
+        url: URL.createObjectURL(file),
+        title: file.name.replace(/\.[^/.]+$/, ""),
+      };
+      setPortfolio([...portfolio, newPhoto]);
+    }
+  };
+
+  // Remove uma foto do portfólio
+  const handleRemovePortfolio = (id: string) => {
+    setPortfolio(portfolio.filter((p) => p.id !== id));
+  };
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      role,
+      docType,
+      name,
+      documentNumber,
+      email,
+      phone,
+      bio,
+      ...(role === "PRESTADOR" && {
+        profession,
+        services,
+        portfolio,
+      }),
+    };
+
+    localStorage.setItem("labuta-perfil-usuario", JSON.stringify(payload));
+    alert("Perfil cadastrado com sucesso!");
+    onClose();
+  };
+
+  return (
+    <>
+      <ModalHeader title="Cadastro de Perfil" onClose={onClose} />
+       <form onSubmit={handleSubmit} className="px-7 py-6 flex flex-col gap-6 max-h-[80vh] overflow-y-auto">
+        {/* 1. Seleção: Contratante ou Prestador */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-gray-700">Eu quero atuar como:</label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => setRole("CONTRATANTE")}
+              className={`flex items-center justify-center gap-2 p-3 rounded-xl border font-medium text-sm transition-all ${
+                role === "CONTRATANTE"
+                  ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
+                  : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+              }`}
+            >
+              <UserCheck className="w-4 h-4" />
+              Contratante
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setRole("PRESTADOR")}
+              className={`flex items-center justify-center gap-2 p-3 rounded-xl border font-medium text-sm transition-all ${
+                role === "PRESTADOR"
+                  ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
+                  : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+              }`}
+            >
+              <Briefcase className="w-4 h-4" />
+              Prestador de Serviço
+            </button>
+          </div>
+        </div>
+
+        {/* 2. Seleção: PF (CPF) ou PJ (CNPJ) */}
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-gray-700">Tipo de Inscrição:</label>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+              <input
+                type="radio"
+                name="docType"
+                checked={docType === "CPF"}
+                onChange={() => setDocType("CPF")}
+                className="accent-[#1D4ED8]"
+              />
+              <User className="w-4 h-4 text-gray-500" />
+              Pessoa Física (CPF)
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+              <input
+                type="radio"
+                name="docType"
+                checked={docType === "CNPJ"}
+                onChange={() => setDocType("CNPJ")}
+                className="accent-[#1D4ED8]"
+              />
+              <Building2 className="w-4 h-4 text-gray-500" />
+              Pessoa Jurídica (CNPJ)
+            </label>
+          </div>
+        </div>     {/* 3. Dados Principais de Identificação */}
+        <div className="grid grid-cols-2 gap-4">
+          <Field label={docType === "CPF" ? "Nome Completo" : "Razão Social"}>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={inputClass}
+              placeholder={docType === "CPF" ? "Digite seu nome completo" : "Nome oficial da empresa"}
+              required
+            />
+          </Field>
+
+          <Field label={docType === "CPF" ? "CPF" : "CNPJ"}>
+            <input
+              type="text"
+              value={documentNumber}
+              onChange={(e) => setDocumentNumber(e.target.value)}
+              className={inputClass}
+              placeholder={docType === "CPF" ? "000.000.000-00" : "00.000.000/0001-00"}
+              required
+            />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="E-mail de Contato">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={inputClass}
+              placeholder="seuemail@exemplo.com"
+              required
+            />
+          </Field>
+
+          <Field label="Telefone / WhatsApp">
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className={inputClass}
+              placeholder="(00) 00000-0000"
+              required
+            />
+          </Field>
+        </div>
+		{/* 4. Foto de Perfil */}
+        <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <div className="w-16 h-16 rounded-full bg-blue-100 text-[#1D4ED8] flex items-center justify-center font-bold text-xl overflow-hidden border border-blue-200">
+            {avatarPreview ? (
+              <img src={avatarPreview} alt="Preview" className="w-full h-full object-cover" />
+            ) : (
+              name.charAt(0).toUpperCase() || <User className="w-6 h-6" />
+            )}
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-gray-800">Foto de Perfil</p>
+            <p className="text-xs text-gray-500 mb-2">Envie uma foto nítida ou o logotipo da sua empresa</p>
+            <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 cursor-pointer hover:bg-gray-50">
+              <Upload className="w-3.5 h-3.5" />
+              Selecionar foto
+              <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+            </label>
+          </div>
+        </div>
+
+       {/* 5. Autodeclaração / Bio */}
+        <Field label="Autodeclaração / Sobre você">
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            className={`${inputClass} resize-none h-24`}
+            placeholder={
+              role === "PRESTADOR"
+                ? "Apresente suas habilidades, sua pontualidade e os diferenciais do seu atendimento..."
+                : "Apresente quem é você ou sua empresa e que tipos de serviço costuma demandar..."
+            }
+            required
+          />
+        </Field>
+		{/* 6. Seção Exclusiva: Prestador de Serviço */}
+        {role === "PRESTADOR" && (
+          <div className="flex flex-col gap-5 border-t border-gray-100 pt-5">
+            <div className="flex items-center gap-2 text-[#1D4ED8]">
+              <Hammer className="w-5 h-5" />
+              <h4 className="font-bold text-base text-gray-900">Especialidades e Portfólio</h4>
+            </div>
+
+            <Field label="Profissão Principal">
+              <input
+                type="text"
+                value={profession}
+                onChange={(e) => setProfession(e.target.value)}
+                className={inputClass}
+                placeholder="Ex: Eletricista Residencial, Mecânico Geral, Encanador..."
+                required={role === "PRESTADOR"}
+              />
+            </Field>
+
+            {/* Tipos de serviços prestados */}
+            <Field label="Tipos de Serviços Realizados (Pressione Enter para adicionar)">
+              <div className="flex flex-col gap-2">
+                <input
+                  type="text"
+                  value={serviceInput}
+                  onChange={(e) => setServiceInput(e.target.value)}
+                  onKeyDown={handleAddService}
+                  className={inputClass}
+                  placeholder="Ex: Troca de fiação, Instalação de chuveiro... e tecle Enter"
+                />
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {services.map((srv) => (
+                    <span
+                      key={srv}
+                      className="bg-blue-50 text-[#1D4ED8] border border-blue-200 text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5"
+                    >
+                      {srv}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveService(srv)}
+                        className="text-blue-400 hover:text-blue-700 font-bold"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Field>
+
+            {/* Galeria de Fotos do Portfólio */}
+            <Field label="Portfólio de Serviços Concluídos">
+              <div className="flex flex-col gap-3">
+                <label className={fileClass}>
+                  <ImageIcon className="w-4 h-4 text-gray-500" />
+                  <span>Adicionar foto de serviço realizado</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleAddPortfolioImage}
+                  />
+                </label>
+
+                {portfolio.length > 0 && (
+                  <div className="grid grid-cols-3 gap-3 mt-2">
+                    {portfolio.map((item) => (
+                      <div
+                        key={item.id}
+                        className="relative group rounded-xl overflow-hidden border border-gray-200 h-24 bg-gray-50"
+                      >
+                        <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => handleRemovePortfolio(item.id)}
+                          className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-md opacity-90 hover:opacity-100 transition-opacity"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Field>
+          </div>
+        )}
+		 {/* Botão de Envio */}
+        <button type="submit" className={`${btnBlueW} mt-2`}>
+          <Send className="w-4 h-4" />
+          Concluir Cadastro de Perfil
+        </button> 
+      </form>
+    </>
+  );
 }
