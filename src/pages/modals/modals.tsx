@@ -76,21 +76,7 @@ export function ContratarModal({ prof, onClose }: { prof: Prof; onClose: () => v
 }
 
 
-// Modal Cadastro Profissional - Página do Usuario Logado
-export function CadastroProfModal({ onClose }: { onClose: () => void }) {
-	const [extras, setExtras] = useState<string[]>([]);
-	const [profession, setProfession] = useState("");
-	const [years, setYears] = useState("");
-	const [summary, setSummary] = useState("");
-
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		localStorage.setItem("labuta-professional-data", JSON.stringify({ profession, years, extras, summary }));
-		onClose();
-	};
-
-	return <><ModalHeader title="Cadastro Profissional" onClose={onClose} /><form className="px-7 py-6 flex flex-col gap-5" onSubmit={handleSubmit}><div className="grid grid-cols-2 gap-4"><Field label="Profissão principal"><input value={profession} onChange={(e) => setProfession(e.target.value)} className={inputClass} required /></Field><Field label="Anos de experiência"><input type="number" value={years} onChange={(e) => setYears(e.target.value)} className={inputClass} required /></Field></div><Field label="Outras profissões / funções"><div className="bg-[#F9FAFB] border border-gray-200 rounded-xl p-4 grid grid-cols-2 gap-y-3">{extraProfessions.map((p) => <label key={p} className="flex items-center gap-2 text-sm"><input type="checkbox" checked={extras.includes(p)} onChange={() => setExtras((v) => v.includes(p) ? v.filter((x) => x !== p) : [...v, p])} />{p}</label>)}</div></Field><Field label="Resumo de experiência"><textarea value={summary} onChange={(e) => setSummary(e.target.value)} className={`${inputClass} resize-none h-24`} required /></Field><button type="submit" className={btnBlueW}><Send className="w-4 h-4" />Enviar Cadastro</button></form></>;
-}
+// Antigo Modal Cadastro Profissional - Página do Usuario Logado
 
 
 const tipoConfig = {
@@ -306,7 +292,8 @@ export function AvaliacaoModal({ onClose }: { onClose: () => void }) {
 }
 
 // Modal de Cadastro Completo / Edição de Perfil
-export function CadastroCompletoModal({ onClose }: { onClose: () => void }) {
+// export function CadastroCompletoModal({ onClose }: { onClose: () => void }) {
+export function CadastroProfModal({ onClose }: { onClose: () => void }) {
   // Estado 1: Define se o usuário é Contratante ou Prestador
   const [role, setRole] = useState<"CONTRATANTE" | "PRESTADOR">("PRESTADOR");
 
