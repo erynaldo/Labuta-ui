@@ -62,15 +62,16 @@
   * Página de Login e Modal de Recuperar Senha -> **Vanessa**
   * Página de Usuário Logado e suas funcionalidades -> **Ramnsés**
   * Cabeçalho, Rodapé, Formulário de Buscar/Filtrar Profissionais, Modal de Acessar Perfil Profissional -> **Erinaldo**
-  * Modais (Cadastro do Perfil Profissional, Contratar o Profissional, Avaliação do Serviço) -> **Fabio, David**
+  * Modal dentro da Página Usuário logado (Cadastro do Perfil Profissional, dados profissionais do prestador de serviço) -> **Fabio**
+  * Modais dentro da Página Usuario logado (Contratar o Profissional ou Avaliação do Serviço) -> **David**
  
   ## Prazo dessa Segunda Entrega no SIGAA: (17/08/2026 - 13/09/2026)
 
   ## Prazos para implementação das interfaces
-  - 28/08 a 08/09 -> Implementação das páginas.
-  - 09/09 a 11/09 -> Revisão de todo o código.
-  - 12/09 -> Versionar e enviar o projeto para o repositório no GitHub.
+  - 28/08 a 10/09 -> Implementação das páginas e revisão das branchs.
+  - 11/09 -> Revisão do projeto no GitHub.
+  - 11/09 -> Atualizar e rodar o projeto localmente.
   - 12/09 -> Atualizar as tarefas, sprints no Trello.
-  - 13/09 -> Envio da Atividade do SIGAA (arquivo pdf com os links Trello e Repositório).
+  - 12/09 -> Envio da Atividade do SIGAA (arquivo pdf com os links Trello e Repositório).
   
   ## Novas alterações:

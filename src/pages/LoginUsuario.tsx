@@ -76,6 +76,10 @@ export function LoginPage({ navigate, onLogin }: { navigate: (p: Page) => void; 
               />
             </Field>
 
+            
+            <label className="text-xs text-gray-600 font-light">Para teste use Email: usuario@email.com e Senha: 123789</label>
+            
+
             <div className="text-right">
               <button
                 type="button"
