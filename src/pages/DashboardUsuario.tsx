@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Briefcase, ChevronDown, Hammer, LogOut, MessageSquare, Settings, Star, User } from "lucide-react";
+import { Briefcase, ChevronDown, ClipboardList, Hammer, LogOut, MapPin, MessageSquare, Search, Settings, Star, User } from "lucide-react";
 import type { AppUser, DashModal, Page, Prof, UserRole } from "../types/types";
 import { btnBlueW, Field, inputClass, ModalHeader, ModalOverlay, ProfessionalsSection } from "../components/shared/others";
 import { AvaliacaoModal, CadastroProfModal, ContratarModal, MensagensModal, SaibaMaisModal } from "./modals/modals";
@@ -104,15 +104,70 @@ export function DashboardUsuario({ navigate, user, onLogout, onUserUpdate }: { n
       </header>
 
       <main className="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+        <section className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-sm font-medium text-[#1D4ED8]">Área do usuário</p>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight text-gray-900">Olá, {user?.name?.split(" ")[0] ?? "usuário"}!</h1>
+            <p className="mt-2 text-sm text-gray-500">Encontre profissionais confiáveis para resolver o que você precisa.</p>
+          </div>
+          <div className="flex items-center gap-2 self-start rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 sm:self-auto">
+            <span className="h-2 w-2 rounded-full bg-green-500" /> Conta ativa
+          </div>
+        </section>
 
-        <div className="mb-8">
-          <p className="text-sm">Responsável pelo desenvolvimento dessa página, cards, funcionalidades:</p>
-          <p className="text-sm text-blue-600">Ramnsés</p>
-          <br/>
-          <p className="text-sm">Responsável pelos modais nessa página (Cadastro do Perfil Profissional, Contratar o Profissional, Avaliação do Serviço):</p>
-          <p className="text-sm text-blue-600">Fabio, David</p>
-        </div>
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-3" aria-label="Resumo da conta">
+          {[
+            { label: "Profissionais disponíveis", value: "4", icon: <User className="h-5 w-5" /> },
+            { label: "Solicitações abertas", value: "1", icon: <ClipboardList className="h-5 w-5" /> },
+            { label: "Mensagens não lidas", value: "2", icon: <MessageSquare className="h-5 w-5" /> },
+          ].map((item) => (
+            <div key={item.label} className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-[#1D4ED8]">{item.icon}</div>
+              <div><p className="text-2xl font-bold text-gray-900">{item.value}</p><p className="text-xs text-gray-500">{item.label}</p></div>
+            </div>
+          ))}
+        </section>
+
+        <section className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3" aria-label="Ações rápidas">
+          {featureCards.map((card) => (
+            <button key={card.key} onClick={() => setDashModal(card.key)} className="group flex items-start gap-4 rounded-2xl border border-gray-100 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#1D4ED8] text-white">{card.icon}</div>
+              <div className="min-w-0 flex-1"><div className="flex items-center justify-between gap-2"><h2 className="text-sm font-semibold text-gray-900">{card.label}</h2>{card.badge > 0 && <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">{card.badge}</span>}</div><p className="mt-1 text-xs leading-relaxed text-gray-500">{card.desc}</p><span className="mt-3 inline-block text-xs font-semibold text-[#1D4ED8] group-hover:underline">Abrir</span></div>
+            </button>
+          ))}
+        </section>
+
+        <section className="mt-10">
+          <div className="mb-5 flex items-center justify-between gap-4"><div><h2 className="text-xl font-bold text-gray-900">Encontre um profissional</h2><p className="mt-1 text-sm text-gray-500">Compare avaliações, experiência e disponibilidade.</p></div><Search className="hidden h-5 w-5 text-gray-300 sm:block" /></div>
+          <ProfessionalsSection onSaibaMais={openSaibaMais} />
+        </section>
       </main>
+
+      {dashModal && (
+        <ModalOverlay onClose={closeModal} wide={dashModal === "mensagens"}>
+          {dashModal === "saiba-mais" && selectedProf && <SaibaMaisModal prof={selectedProf} onClose={closeModal} onContratar={openContratar} />}
+          {dashModal === "contratar" && selectedProf && <ContratarModal prof={selectedProf} onClose={closeModal} />}
+          {dashModal === "cadastro-prof" && <CadastroProfModal onClose={closeModal} />}
+          {dashModal === "mensagens" && <MensagensModal onClose={closeModal} />}
+          {dashModal === "avaliacao" && <AvaliacaoModal onClose={closeModal} />}
+        </ModalOverlay>
+      )}
+
+      {editOpen && (
+        <ModalOverlay onClose={() => setEditOpen(false)}>
+          <ModalHeader title="Editar sua conta" onClose={() => setEditOpen(false)} />
+          <form className="flex flex-col gap-4 px-7 py-6" onSubmit={saveAccount}>
+            {editError && <p className="rounded-lg border border-red-200 bg-red-50 p-2 text-center text-xs text-red-600">{editError}</p>}
+            <Field label="Nome completo"><input className={inputClass} value={editForm.name} onChange={(event) => updateEditField("name", event.target.value)} /></Field>
+            <Field label="E-mail"><input type="email" className={inputClass} value={editForm.email} onChange={(event) => updateEditField("email", event.target.value)} /></Field>
+            <Field label="Telefone"><input className={inputClass} value={editForm.phone} onChange={(event) => updateEditPhone(event.target.value)} placeholder="(00) 00000-0000" /></Field>
+            <Field label="Cidade"><input className={inputClass} value={editForm.city} onChange={(event) => updateEditField("city", event.target.value)} /></Field>
+            <Field label="Senha"><input type="password" className={inputClass} value={editForm.password} onChange={(event) => updateEditField("password", event.target.value)} /></Field>
+            <Field label="Quero atuar como"><select className={`${inputClass} bg-white`} value={editForm.role} onChange={(event) => updateEditField("role", event.target.value)}><option value="client">Contratante</option><option value="professional">Prestador de serviço</option></select></Field>
+            <button type="submit" className={btnBlueW}><Settings className="h-4 w-4" />Salvar alterações</button>
+          </form>
+        </ModalOverlay>
+      )}
     </div>
   );
 }
