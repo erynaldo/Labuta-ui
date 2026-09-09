@@ -137,7 +137,7 @@ export function DashboardUsuario({ navigate, user, onLogout, onUserUpdate }: { n
           ))}
         </section>
 
-        <section className="mt-10">
+        <section className="mt-10" >
           <div className="mb-5 flex items-center justify-between gap-4"><div><h2 className="text-xl font-bold text-gray-900">Encontre um profissional</h2><p className="mt-1 text-sm text-gray-500">Compare avaliações, experiência e disponibilidade.</p></div><Search className="hidden h-5 w-5 text-gray-300 sm:block" /></div>
           <ProfessionalsSection onSaibaMais={openSaibaMais} />
         </section>
